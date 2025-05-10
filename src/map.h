@@ -10,6 +10,7 @@ public:
     void specifyStartingPoint();
     Direction specifyStartingDir();
     void render(RenderWindow& window);
+    void renderRects(RenderWindow& window);
     void findRoadMap(pair<int,int> tile, Direction dir);
     vector<vector<string>> getTheMap() const;
     pair<int,int> getStartingPoint() const;
