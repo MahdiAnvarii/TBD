@@ -93,7 +93,7 @@ void Map::findRoadMap(pair<int,int> tile, Direction dir){
     findRoadMap(tile, dir);
 }
 
-void Map::render(RenderWindow& window){
+void Map::renderRects(RenderWindow& window){
     RectangleShape scoreRect(Vector2f(MENU_X, MENU_Y-theMap.size()*TILE_SIZE));
     scoreRect.setFillColor(SCORE_RECT_COLOR);
     scoreRect.setPosition(0, 0);
@@ -104,7 +104,9 @@ void Map::render(RenderWindow& window){
 
     window.draw(scoreRect);
     window.draw(sidebarRect);
+}
 
+void Map::render(RenderWindow& window){
     Texture pathTexture;
     Texture towerTexture;
 
