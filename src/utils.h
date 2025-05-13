@@ -13,6 +13,7 @@
 #include <memory>
 #include <cstdlib>
 #include <utility>
+#include <cmath>
 
 using namespace std;
 using namespace sf;
@@ -23,11 +24,20 @@ const string TOWER_TILE_ADDRESS = "files/pics/tower_tile.png";
 const string SIMPLE_BALOON_ADDRESS = "files/pics/simple_baloon.png";
 const string PREGNANT_BALOON_ADDRESS = "files/pics/pregnant_baloon.png";
 const string BACKGROUND_MUSIC_ADDRESS = "files/audio/pirate-of-caribbean.ogg";
-const string FONT_ADDRESS = "files/fonts/Noto_Sans/static/NotoSans-Regular.ttf";
+const string SIMPLE_TOWER_MUSIC_ADDRESS = "files/audio/simple-sound.ogg";
+const string ICE_TOWER_MUSIC_ADDRESS = "files/audio/snow-sound.ogg";
+const string BOMB_TOWER_MUSIC_ADDRESS = "files/audio/bomb-sound.ogg";
+const string EVIL_MUSIC_ADDRESS = "files/audio/evil-sound.ogg";
+const string TADA_MUSIC_ADDRESS = "files/audio/tada-sound.ogg";
+const string MAIN_FONT_ADDRESS = "files/fonts/Noto_Sans/static/NotoSans-Regular.ttf";
+const string END_FONT_ADDRESS = "files/fonts/Anton/Anton-Regular.ttf";
 const string BOMB_TOWER_ADDRESS = "files/pics/bomb_tower.png";
 const string SIMPLE_TOWER_ADDRESS = "files/pics/simple_tower.png";
 const string ICE_TOWER_ADDRESS = "files/pics/ice_tower.png";
-const vector<int> TOWER_PRICES = {200, 400, 600};
+const string BOMB_TOWER_BW_ADDRESS = "files/pics/bomb_tower_bw.png";
+const string SIMPLE_TOWER_BW_ADDRESS = "files/pics/simple_tower_bw.png";
+const string ICE_TOWER_BW_ADDRESS = "files/pics/ice_tower_bw.png";
+const vector<int> TOWER_PRICES = {200, 300, 500};
 const int TILE_SIZE = 80;
 const float SIMPLE_BALOON_SIZE_X = 40.0f;
 const float SIMPLE_BALOON_SIZE_Y = 60.0f;
@@ -45,9 +55,15 @@ const string NORMAL = "Normal";
 const string PREGNANT = "Pregnant";
 const string SHOP = "Shop";
 const string ROUND = "Round";
+const string WON_MESSAGE = "YOU COOKED";
+const string LOST_MESSAGE = "YOU WERE COOKED";
 const int BALOON_SPEED = 10;
+const int BABY_BALOONS = 2;
 const int STARTING_SCORE = 300;
-
+const int SIMPLE_KILL_SCORE = 10;
+const int PREGNANT_KILL_SCORE = 25;
+const int STARTING_MISTAKES = 5;
+const int ROUND_NUMBERS = 3;
 
 enum class Direction {
     Right,
@@ -65,6 +81,11 @@ enum class TowerType {
 enum class BaloonType {
     Simple,
     Pregnant
+};
+
+enum class GameResult {
+    Won,
+    Lost
 };
 
 #endif //UTILS_H
