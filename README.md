@@ -16,3 +16,4 @@ To build and run the game:
 ```bash
 make        # Build the project
 make run    # Run the game
+make clean  # Clean up build files
