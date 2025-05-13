@@ -1,6 +1,6 @@
 # Tower Balloon Defense Game
 
-A simple Tower Defense (TBD) game built using C++ and SFML.
+A simple Tower Balloon Defense (TBD) game built using C++ and SFML.
 
 ## Prerequisites
 
