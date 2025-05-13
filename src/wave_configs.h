@@ -12,20 +12,22 @@ struct AttackWave {
 
 const vector<AttackWave> ATTACKING_PLAN = {
     {{{"Normal", 5}}, {500, 700}},
-    {{{"Normal", 10}, {"Pregnant", 5}}, {400, 600}},
-    {{{"Normal", 15}, {"Pregnant", 10}}, {200, 400}}
+    {{{"Normal", 10}, {"Pregnant", 2}}, {400, 600}},
+    {{{"Normal", 15}, {"Pregnant", 4}}, {200, 400}}
 };
 
 const int WAVE_LAUNCH_GAP_SECS = 10;
+const int WAVE_LEAST_TIME_TO_WIN = 1;
 
 class WaveManager {
 public:
-    WaveManager(const Map& gameMap, std::vector<Baloon>& baloonsRef);
+    WaveManager(const shared_ptr<Map>& gameMap, vector<shared_ptr<Baloon>>& baloonsRef);
     void update();
     int getRoundOfWave() const;
+    float getSpawnClock() const;
 private:
-    const Map& map;
-    vector<Baloon>& baloons;
+    const shared_ptr<Map>& map;
+    vector<shared_ptr<Baloon>>& baloons;
     Clock gameClock;
     Clock spawnClock;
     int currentWaveIndex = 0;
