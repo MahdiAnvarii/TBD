@@ -18,21 +18,27 @@ public:
     void render();
     void renderTexts();
     void handleMouseClick(int mouseX, int mouseY);
+    void endGame();
+    void renderEndTexts();
     RenderWindow window;
 private:
     int score;
+    int remainingMistakes;
     int round;
-    Map map;
-    vector<Baloon> baloons;
-    Shop shop;
+    shared_ptr<Map> map;
+    vector<shared_ptr<Baloon>> baloons;
+    vector<shared_ptr<Baloon>> newBornBaloons;
+    shared_ptr<Shop> shop;
     bool isPlacingTower = false;
-    vector<Tower> towers;
+    vector<shared_ptr<Tower>> towers;
     vector<vector<string>> theMap;
     vector<pair<int,int>> filledTiles;
     TowerType towerType;
     int towerPrice;
-    unique_ptr<WaveManager> waveManager;
-    //Music music;
+    shared_ptr<WaveManager> waveManager;
+    GameResult gameResult;
+    Music music;
+    Music finalMusic;
 };
 
 #endif //SYSTEM_H
