@@ -1,7 +1,7 @@
 #include "baloon.h"
 #include "utils.h"
 
-Baloon::Baloon(vector<vector<string>> theMap_, vector<pair<int,int>> roadMap_, BaloonType baloonType_){
+Baloon::Baloon(const vector<vector<string>>& theMap_, const vector<pair<int,int>>& roadMap_, BaloonType baloonType_){
     theMap = theMap_;
     roadMap = roadMap_;
     baloonType = baloonType_;
@@ -25,11 +25,23 @@ Baloon::Baloon(vector<vector<string>> theMap_, vector<pair<int,int>> roadMap_, B
 }
 
 void Baloon::update(){
-    if (tileIndex+1 > roadMap.size()) return;
-    else if (tileIndex+1 == roadMap.size()){
+    if (frozen()) {
+        if (freezeClock.getElapsedTime().asSeconds() >= freezeDuration) {
+            isFrozen = false;
+        }
+        return;
+    }
+
+    if (tileIndex+1 > roadMap.size()){
+        runAway = true;
+        return;
+    }
+    else if (tileIndex+1 == roadMap.size() && !reachFinalTile){
         tile.first+=deltaTile.first;
         tile.second+=deltaTile.second;
-    } else{
+        reachFinalTile = true;
+    }
+    else if (tileIndex+1 < roadMap.size()){
         tile=roadMap[tileIndex];
         deltaTile = {
             roadMap[tileIndex+1].first - tile.first,
@@ -53,6 +65,14 @@ void Baloon::update(){
         baloonY-=baloonSpeed;
         if (baloonY<=MENU_Y + (tile.first-1-theMap.size()) * TILE_SIZE + (TILE_SIZE-baloonSizeY)/2) tileIndex+=1;
     }
+}
+
+void Baloon::setBabyBaloon(Vector2f parentPosition, pair<int,int> tile_, int tileIndex_, pair<int, int> deltaTile_){
+    baloonX = parentPosition.x;
+    baloonY = parentPosition.y;
+    tile = tile_;
+    tileIndex = tileIndex_;
+    deltaTile = deltaTile_;
 }
 
 void Baloon::setBaloonType(){
@@ -84,3 +104,16 @@ void Baloon::render(RenderWindow& window){
 Sprite Baloon::getBaloonSprite() const { return baloonSprite; }
 float Baloon::getBaloonSizeX() const { return baloonSizeX; }
 float Baloon::getBaloonSizeY() const { return baloonSizeY; }
+
+void Baloon::markAsDead() { isDead = true; }
+bool Baloon::dead() const { return isDead; }
+void Baloon::markAsFrozen() { 
+    isFrozen = true;
+    freezeClock.restart();
+} 
+bool Baloon::frozen() const { return isFrozen; }
+BaloonType Baloon::getBaloonType() const { return baloonType; }
+pair<int,int> Baloon::getBaloonTile() const { return tile; }
+pair<int, int> Baloon::getBaloonDeltaTile() const { return deltaTile; }
+int Baloon::getBaloonTileIndex() const { return tileIndex; }
+bool Baloon::didYouRunAway() const { return runAway; }
