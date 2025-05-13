@@ -5,13 +5,23 @@
 
 class Baloon{
 public:
-    Baloon(vector<vector<string>> theMap_, vector<pair<int,int>> roadMap_, BaloonType baloonType_);
+    Baloon(const vector<vector<string>>& theMap_, const vector<pair<int,int>>& roadMap_, BaloonType baloonType_);
     void setBaloonType();
+    void setBabyBaloon(Vector2f parentPosition, pair<int,int> tile_, int tileIndex_, pair<int, int> deltaTile_);
     void update();
     void render(RenderWindow& window);
     Sprite getBaloonSprite() const;
     float getBaloonSizeX() const;
     float getBaloonSizeY() const;
+    BaloonType getBaloonType() const;
+    pair<int,int> getBaloonTile() const;
+    pair<int, int> getBaloonDeltaTile() const;
+    int getBaloonTileIndex() const;
+    void markAsDead();
+    bool dead() const;
+    void markAsFrozen();
+    bool frozen() const;
+    bool didYouRunAway() const;
 private:
     int baloonX;
     int baloonY;
@@ -26,6 +36,12 @@ private:
     pair<int, int> deltaTile;
     Texture baloonTexture;
     Sprite baloonSprite;
+    bool isDead = false;
+    bool isFrozen = false;
+    Clock freezeClock;
+    float freezeDuration = 1.0f;
+    bool reachFinalTile = false;
+    bool runAway = false;
 };
 
 #endif //BALOON_H
