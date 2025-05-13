@@ -1,7 +1,7 @@
 #include "wave_configs.h"
 #include "utils.h"
 
-WaveManager::WaveManager(const Map& gameMap, vector<Baloon>& baloonsRef)
+WaveManager::WaveManager(const shared_ptr<Map>& gameMap, vector<shared_ptr<Baloon>>& baloonsRef)
     : map(gameMap), baloons(baloonsRef) {}
 
 void WaveManager::update() {
@@ -47,7 +47,8 @@ void WaveManager::prepareNextWave() {
 
 void WaveManager::spawnBalloon(const string& type) {
     BaloonType btype = (type == "Normal") ? BaloonType::Simple : BaloonType::Pregnant;
-    baloons.emplace_back(map.getTheMap(), map.getRoadMap(), btype);
+    baloons.push_back(make_shared<Baloon>(map->getTheMap(), map->getRoadMap(), btype));
 }
 
 int WaveManager::getRoundOfWave() const { return roundOFWave; }
+float WaveManager::getSpawnClock() const { return spawnClock.getElapsedTime().asSeconds(); }
