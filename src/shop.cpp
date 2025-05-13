@@ -7,11 +7,11 @@ Shop::Shop(){
     bombPrice = TOWER_PRICES[2];
 }
 
-void Shop::render(RenderWindow& window){
-    if (!simpleTowerTexture.loadFromFile(SIMPLE_TOWER_ADDRESS)) {
+void Shop::render(RenderWindow& window, int score){
+    if (!simpleTowerTexture.loadFromFile(SIMPLE_TOWER_ADDRESS) || !simpleTowerTextureBW.loadFromFile(SIMPLE_TOWER_BW_ADDRESS)) {
         return;
     }
-    simpleTowerSprite.setTexture(simpleTowerTexture);
+    simpleTowerSprite.setTexture(score >= simplePrice ? simpleTowerTexture : simpleTowerTextureBW);
     Vector2u simpleTowerTexSize = simpleTowerSprite.getTexture()->getSize();
     float simpleTowerScaleX = SHOP_ITEM_X / simpleTowerTexSize.x;
     float simpleTowerScaleY = SHOP_ITEM_Y / simpleTowerTexSize.y;
@@ -19,10 +19,10 @@ void Shop::render(RenderWindow& window){
     simpleTowerSprite.setPosition(920, 150);
     window.draw(simpleTowerSprite); 
 
-    if (!iceTowerTexture.loadFromFile(ICE_TOWER_ADDRESS)) {
+    if (!iceTowerTexture.loadFromFile(ICE_TOWER_ADDRESS) || !iceTowerTextureBW.loadFromFile(ICE_TOWER_BW_ADDRESS)) {
         return;
     }
-    iceTowerSprite.setTexture(iceTowerTexture);
+    iceTowerSprite.setTexture(score >= icePrice ? iceTowerTexture : iceTowerTextureBW);
     Vector2u iceTowerTexSize = iceTowerSprite.getTexture()->getSize();
     float iceTowerScaleX = SHOP_ITEM_X / iceTowerTexSize.x;
     float iceTowerScaleY = SHOP_ITEM_Y / iceTowerTexSize.y;
@@ -30,10 +30,10 @@ void Shop::render(RenderWindow& window){
     iceTowerSprite.setPosition(920, 340);
     window.draw(iceTowerSprite); 
 
-    if (!bombTowerTexture.loadFromFile(BOMB_TOWER_ADDRESS)) {
+    if (!bombTowerTexture.loadFromFile(BOMB_TOWER_ADDRESS) || !bombTowerTextureBW.loadFromFile(BOMB_TOWER_BW_ADDRESS)) {
         return;
     }
-    bombTowerSprite.setTexture(bombTowerTexture);
+    bombTowerSprite.setTexture(score >= bombPrice ? bombTowerTexture : bombTowerTextureBW);
     Vector2u bombTowerTexSize = bombTowerSprite.getTexture()->getSize();
     float bombTowerScaleX = SHOP_ITEM_X / bombTowerTexSize.x;
     float bombTowerScaleY = SHOP_ITEM_Y / bombTowerTexSize.y;
@@ -46,7 +46,7 @@ void Shop::render(RenderWindow& window){
 
 void Shop::renderPrices(RenderWindow& window){
     Font font;
-    if (!font.loadFromFile(FONT_ADDRESS)) {
+    if (!font.loadFromFile(MAIN_FONT_ADDRESS)) {
         return;
     }
     Text simpleText;
@@ -79,4 +79,4 @@ Sprite Shop::getIceTowerSprite() const { return iceTowerSprite; }
 Sprite Shop::getBombTowerSprite() const { return bombTowerSprite; }
 int Shop::getSimpleTowerPrice() const { return simplePrice; }
 int Shop::getIceTowerPrice() const { return icePrice; };
-int Shop::getBombTowerPrice() const { return bombPrice; };
+int Shop::getBombTowerPrice() const { return bombPrice; }
