@@ -6,7 +6,7 @@
 class Shop{
 public:
     Shop();
-    void render(RenderWindow& window);
+    void render(RenderWindow& window, int score);
     void renderPrices(RenderWindow& window);
     Sprite getSimpleTowerSprite() const;
     Sprite getIceTowerSprite() const;
@@ -21,6 +21,9 @@ private:
     Texture simpleTowerTexture;
     Texture iceTowerTexture;
     Texture bombTowerTexture;
+    Texture simpleTowerTextureBW;
+    Texture iceTowerTextureBW;
+    Texture bombTowerTextureBW;
     Sprite simpleTowerSprite;
     Sprite iceTowerSprite;
     Sprite bombTowerSprite;
