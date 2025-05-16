@@ -16,7 +16,7 @@ void Shop::render(RenderWindow& window, int score){
     float simpleTowerScaleX = SHOP_ITEM_X / simpleTowerTexSize.x;
     float simpleTowerScaleY = SHOP_ITEM_Y / simpleTowerTexSize.y;
     simpleTowerSprite.setScale(simpleTowerScaleX, simpleTowerScaleY);
-    simpleTowerSprite.setPosition(920, 150);
+    simpleTowerSprite.setPosition(SHOP_SIMPLE_TOWER_POS);
     window.draw(simpleTowerSprite); 
 
     if (!iceTowerTexture.loadFromFile(ICE_TOWER_ADDRESS) || !iceTowerTextureBW.loadFromFile(ICE_TOWER_BW_ADDRESS)) {
@@ -27,7 +27,7 @@ void Shop::render(RenderWindow& window, int score){
     float iceTowerScaleX = SHOP_ITEM_X / iceTowerTexSize.x;
     float iceTowerScaleY = SHOP_ITEM_Y / iceTowerTexSize.y;
     iceTowerSprite.setScale(iceTowerScaleX, iceTowerScaleY);
-    iceTowerSprite.setPosition(920, 340);
+    iceTowerSprite.setPosition(SHOP_ICE_TOWER_POS);
     window.draw(iceTowerSprite); 
 
     if (!bombTowerTexture.loadFromFile(BOMB_TOWER_ADDRESS) || !bombTowerTextureBW.loadFromFile(BOMB_TOWER_BW_ADDRESS)) {
@@ -38,7 +38,7 @@ void Shop::render(RenderWindow& window, int score){
     float bombTowerScaleX = SHOP_ITEM_X / bombTowerTexSize.x;
     float bombTowerScaleY = SHOP_ITEM_Y / bombTowerTexSize.y;
     bombTowerSprite.setScale(bombTowerScaleX, bombTowerScaleY);
-    bombTowerSprite.setPosition(920, 530);
+    bombTowerSprite.setPosition(SHOP_BOMB_TOWER_POS);
     window.draw(bombTowerSprite); 
 
     renderPrices(window);
@@ -54,7 +54,7 @@ void Shop::renderPrices(RenderWindow& window){
     simpleText.setString(to_string(simplePrice));
     simpleText.setCharacterSize(26);
     simpleText.setFillColor(Color::Black);
-    simpleText.setPosition(960, 290);
+    simpleText.setPosition(SHOP_SIMPLE_TEXT_POS);
     window.draw(simpleText);
 
     Text iceText;
@@ -62,7 +62,7 @@ void Shop::renderPrices(RenderWindow& window){
     iceText.setString(to_string(icePrice));
     iceText.setCharacterSize(26);
     iceText.setFillColor(Color::Black);
-    iceText.setPosition(960, 484);
+    iceText.setPosition(SHOP_ICE_TEXT_POS);
     window.draw(iceText);
 
     Text bombText;
@@ -70,7 +70,7 @@ void Shop::renderPrices(RenderWindow& window){
     bombText.setString(to_string(bombPrice));
     bombText.setCharacterSize(26);
     bombText.setFillColor(Color::Black);
-    bombText.setPosition(960, 672);
+    bombText.setPosition(SHOP_BOMB_TEXT_POS);
     window.draw(bombText);
 }
 

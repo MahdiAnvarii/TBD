@@ -123,7 +123,7 @@ void System::renderTexts(){
     shopText.setString(SHOP);
     shopText.setCharacterSize(44);
     shopText.setFillColor(Color::White);
-    shopText.setPosition(928, 90);
+    shopText.setPosition(SHOP_TEXT_POS);
     window.draw(shopText);
 
     Text scoreText;
@@ -131,7 +131,7 @@ void System::renderTexts(){
     scoreText.setString(to_string(score));
     scoreText.setCharacterSize(38);
     scoreText.setFillColor(Color::White);
-    scoreText.setPosition(42, 20);
+    scoreText.setPosition(SCORE_TEXT_POS);
     window.draw(scoreText);
 
     Text remainingText;
@@ -139,7 +139,7 @@ void System::renderTexts(){
     remainingText.setString(to_string(remainingMistakes));
     remainingText.setCharacterSize(38);
     remainingText.setFillColor(Color::White);
-    remainingText.setPosition(970, 20);
+    remainingText.setPosition(REMAINING_TEXT_POS);
     window.draw(remainingText);
 
     Text roundText;

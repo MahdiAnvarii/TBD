@@ -123,7 +123,10 @@ void Map::render(RenderWindow& window){
             else {
                 tileSprite.setTexture(pathTexture);
             }
-            tileSprite.setScale(0.2f, 0.2f);
+            Vector2u tileTexSize = tileSprite.getTexture()->getSize();
+            float tileScaleX = SCALE_TO_TILE / tileTexSize.x;
+            float tileScaleY = SCALE_TO_TILE / tileTexSize.y;
+            tileSprite.setScale(tileScaleX, tileScaleY);
             tileSprite.setPosition(x * TILE_SIZE, MENU_Y + (y-theMap.size()) * TILE_SIZE);
             window.draw(tileSprite); 
              

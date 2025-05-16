@@ -39,7 +39,7 @@ private:
     bool isDead = false;
     bool isFrozen = false;
     Clock freezeClock;
-    float freezeDuration = 1.0f;
+    float freezeDuration = FREEZE_DURATION;
     bool reachFinalTile = false;
     bool runAway = false;
 };
