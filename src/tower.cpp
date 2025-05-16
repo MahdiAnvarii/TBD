@@ -14,22 +14,22 @@ Tower::Tower(int row_, int col_, int towerPrice_, TowerType towerType_){
 
 void Tower::setTowerType(){
     if (towerType==TowerType::Simple){
-        towerBoard=180;
-        cooldownTime = 1.5f;
+        towerBoard = SIMPLE_TOWER_BOARD;
+        cooldownTime = SIMPLE_TOWER_COOLDOWN_TIME;
         if (!towerTexture.loadFromFile(SIMPLE_TOWER_ADDRESS) || !shotBuffer.loadFromFile(SIMPLE_TOWER_MUSIC_ADDRESS)) {
             return;
         }
         shotSound.setBuffer(shotBuffer);
     } else if (towerType==TowerType::Ice){
-        towerBoard=150;
-        cooldownTime = 1.2f;
+        towerBoard = ICE_TOWER_BOARD;
+        cooldownTime = ICE_TOWER_COOLDOWN_TIME;
         if (!towerTexture.loadFromFile(ICE_TOWER_ADDRESS) || !shotBuffer.loadFromFile(ICE_TOWER_MUSIC_ADDRESS)) {
             return;
         }
         shotSound.setBuffer(shotBuffer);
     } else if (towerType==TowerType::Bomb){
-        towerBoard=120;
-        cooldownTime = 3.0f;
+        towerBoard = BOMB_TOWER_BOARD;
+        cooldownTime = BOMB_TOWER_COOLDOWN_TIME;
         if (!towerTexture.loadFromFile(BOMB_TOWER_ADDRESS) || !shotBuffer.loadFromFile(BOMB_TOWER_MUSIC_ADDRESS)) {
             return;
         }
@@ -53,22 +53,30 @@ void Tower::render(RenderWindow& window){
     window.draw(boundCircle);
 }
 
+float Tower::distanceToTowerCenter(const shared_ptr<Baloon>& baloon) {
+    Vector2f baloonCenter = baloon->getBaloonSprite().getPosition();
+    float dx = towerX + TILE_SIZE/2 - baloonCenter.x - baloon->getBaloonSizeX()/2;
+    float dy = towerY + TILE_SIZE/2 - baloonCenter.y - baloon->getBaloonSizeY()/2;
+    return std::sqrt(dx*dx + dy*dy);
+}
+
+bool Tower::isInTowerRange(const shared_ptr<Baloon>& baloon) {
+    return distanceToTowerCenter(baloon) <= towerBoard;
+}
+
 void Tower::tryShoot(vector<shared_ptr<Baloon>>& baloons) {
     if (shootCooldown.getElapsedTime().asSeconds() < cooldownTime)
         return;
 
     shared_ptr<Baloon> target = nullptr;
-    if (towerType==TowerType::Simple) {
+
+    if (towerType == TowerType::Simple) {
         float minDistance = INFINITY;
         for (auto& baloon : baloons) {
             if (baloon->dead()) continue;
-
-            Vector2f baloonCenter = baloon->getBaloonSprite().getPosition();
-            float dx = towerX + TILE_SIZE/2 - baloonCenter.x - baloon->getBaloonSizeX()/2;
-            float dy = towerY + TILE_SIZE/2 - baloonCenter.y - baloon->getBaloonSizeY()/2;
-            float distance = sqrt(dx*dx + dy*dy);
-            if (distance < towerBoard && distance < minDistance) {
-                minDistance = distance;
+            float dist = distanceToTowerCenter(baloon);
+            if (dist < towerBoard && dist < minDistance) {
+                minDistance = dist;
                 target = baloon;
             }
         }
@@ -79,18 +87,13 @@ void Tower::tryShoot(vector<shared_ptr<Baloon>>& baloons) {
             shootCooldown.restart();
         }
 
-    } else if ((towerType==TowerType::Ice)){
+    } else if (towerType == TowerType::Ice) {
         float minDistance = INFINITY;
         for (auto& baloon : baloons) {
-            if (baloon->dead()) continue;
-            if (baloon->frozen()) continue;
-
-            Vector2f baloonCenter = baloon->getBaloonSprite().getPosition();
-            float dx = towerX + TILE_SIZE/2 - baloonCenter.x - baloon->getBaloonSizeX()/2;
-            float dy = towerY + TILE_SIZE/2 - baloonCenter.y - baloon->getBaloonSizeY()/2;
-            float distance = sqrt(dx*dx + dy*dy);
-            if (distance < towerBoard && distance < minDistance) {
-                minDistance = distance;
+            if (baloon->dead() || baloon->frozen()) continue;
+            float dist = distanceToTowerCenter(baloon);
+            if (dist < towerBoard && dist < minDistance) {
+                minDistance = dist;
                 target = baloon;
             }
         }
@@ -100,22 +103,17 @@ void Tower::tryShoot(vector<shared_ptr<Baloon>>& baloons) {
             shotSound.play();
             shootCooldown.restart();
         }
-    }
-    else if ((towerType==TowerType::Bomb)){
+
+    } else if (towerType == TowerType::Bomb) {
         int maxNeighbors = 0;
         for (auto& baloon : baloons) {
             if (baloon->dead()) continue;
-
-            Vector2f baloonCenter = baloon->getBaloonSprite().getPosition();
-            float dx = towerX + TILE_SIZE/2 - baloonCenter.x - baloon->getBaloonSizeX()/2;
-            float dy = towerY + TILE_SIZE/2 - baloonCenter.y - baloon->getBaloonSizeY()/2;
-            float distance = sqrt(dx*dx + dy*dy);
-            if (distance > towerBoard) continue;
+            if (!isInTowerRange(baloon)) continue;
 
             int neighbors = countNearbyBaloons(baloon, baloons);
             if (neighbors > maxNeighbors) {
                 maxNeighbors = neighbors;
-                target = baloon;;
+                target = baloon;
             }
         }
         if (target) {
@@ -125,31 +123,35 @@ void Tower::tryShoot(vector<shared_ptr<Baloon>>& baloons) {
             shootCooldown.restart();
         }
     }
-} 
+}
+
+bool Tower::isWithinBlastRadius(const shared_ptr<Baloon>& target, const shared_ptr<Baloon>& other) {
+    Vector2f targetCenter = target->getBaloonSprite().getPosition();
+    Vector2f otherCenter = other->getBaloonSprite().getPosition();
+
+    float dx = targetCenter.x + target->getBaloonSizeX()/2 - otherCenter.x - other->getBaloonSizeX()/2;
+    float dy = targetCenter.y + target->getBaloonSizeY()/2 - otherCenter.y - other->getBaloonSizeY()/2;
+
+    float distance = sqrt(dx*dx + dy*dy);
+    return distance <= bombBlastRadius;
+}
 
 int Tower::countNearbyBaloons(const shared_ptr<Baloon>& target, const vector<shared_ptr<Baloon>>& baloons) {
     int count = 0;
-    Vector2f targetCenter = target->getBaloonSprite().getPosition();
     for (const auto& baloon : baloons) {
-        Vector2f baloonCenter = baloon->getBaloonSprite().getPosition();
-        float dx = targetCenter.x + target->getBaloonSizeX()/2 - baloonCenter.x - baloon->getBaloonSizeX()/2;
-        float dy = targetCenter.y + target->getBaloonSizeY()/2 - baloonCenter.y - baloon->getBaloonSizeY()/2;
-        float distance = sqrt(dx*dx + dy*dy);
-        if (distance <= bombBlastRadius)
+        if (isWithinBlastRadius(target, baloon)) {
             count++;
+        }
     }
     return count;
 }
 
 void Tower::killNearbyBaloons(shared_ptr<Baloon>& target, vector<shared_ptr<Baloon>>& baloons) {
-    Vector2f targetCenter = target->getBaloonSprite().getPosition();
     for (auto& baloon : baloons) {
-        Vector2f baloonCenter = baloon->getBaloonSprite().getPosition();
-        float dx = targetCenter.x + target->getBaloonSizeX()/2 - baloonCenter.x - baloon->getBaloonSizeX()/2;
-        float dy = targetCenter.y + target->getBaloonSizeY()/2 - baloonCenter.y - baloon->getBaloonSizeY()/2;
-        float distance = sqrt(dx*dx + dy*dy);
-        if (distance <= bombBlastRadius)
+        if (isWithinBlastRadius(target, baloon)) {
             baloon->markAsDead();
+        }
     }
     target->markAsDead();
 }
+
