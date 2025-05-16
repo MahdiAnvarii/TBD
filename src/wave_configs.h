@@ -13,7 +13,9 @@ struct AttackWave {
 const vector<AttackWave> ATTACKING_PLAN = {
     {{{"Normal", 5}}, {500, 700}},
     {{{"Normal", 10}, {"Pregnant", 2}}, {400, 600}},
-    {{{"Normal", 15}, {"Pregnant", 4}}, {200, 400}}
+    {{{"Normal", 15}, {"Pregnant", 4}}, {200, 400}}, 
+    {{{"Normal", 25}, {"Pregnant", 8}}, {150, 300}},
+    {{{"Normal", 75}, {"Pregnant", 24}}, {50, 150}}
 };
 
 const int WAVE_LAUNCH_GAP_SECS = 10;
