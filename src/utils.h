@@ -62,8 +62,25 @@ const int BABY_BALOONS = 2;
 const int STARTING_SCORE = 300;
 const int SIMPLE_KILL_SCORE = 10;
 const int PREGNANT_KILL_SCORE = 25;
-const int STARTING_MISTAKES = 5;
-const int ROUND_NUMBERS = 3;
+const int STARTING_MISTAKES = 7;
+const int ROUND_NUMBERS = 5;
+const float FREEZE_DURATION = 0.9f;
+const int SIMPLE_TOWER_BOARD = 180;
+const float SIMPLE_TOWER_COOLDOWN_TIME = 1.5f; 
+const int ICE_TOWER_BOARD = 150;
+const float ICE_TOWER_COOLDOWN_TIME = 1.0f; 
+const int BOMB_TOWER_BOARD = 120;
+const float BOMB_TOWER_COOLDOWN_TIME = 2.5f; 
+const float BOMB_BLAST_RADIUS = 80.0f;
+const Vector2f SHOP_SIMPLE_TOWER_POS = {920, 150};
+const Vector2f SHOP_ICE_TOWER_POS = {920, 340};
+const Vector2f SHOP_BOMB_TOWER_POS = {920, 530};
+const Vector2f SHOP_SIMPLE_TEXT_POS = {960, 290};
+const Vector2f SHOP_ICE_TEXT_POS = {960, 484};
+const Vector2f SHOP_BOMB_TEXT_POS = {960, 672};
+const Vector2f SHOP_TEXT_POS = {928, 90};
+const Vector2f SCORE_TEXT_POS = {42, 20};
+const Vector2f REMAINING_TEXT_POS = {970, 20};
 
 enum class Direction {
     Right,
