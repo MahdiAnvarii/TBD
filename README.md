@@ -1,5 +1,5 @@
 # Tower Balloon Defense Game
-![TBD map](https://drive.google.com/file/d/1KmHVsc6r62KlrVfX1pctPzivmhOrTcsK/view?usp=drive_link)  
+![TBD map](https://drive.google.com/uc?export=view&id=1KmHVsc6r62KlrVfX1pctPzivmhOrTcsK)  
 
 A simple Tower Balloon Defense (TBD) game built using C++ and SFML.
 
